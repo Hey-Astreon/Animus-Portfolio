@@ -1,0 +1,131 @@
+{
+  "theme": "dark",
+  "archetype": "Archetype 5 (Jewel & Luxury) mixed with Futuristic/Web3",
+  "typography": {
+    "headings": "Outfit, sans-serif",
+    "body": "Manrope, sans-serif",
+    "accents": "JetBrains Mono, monospace",
+    "rules": {
+      "h1": "text-5xl md:text-6xl lg:text-7xl tracking-tighter font-black uppercase",
+      "h2": "text-3xl md:text-4xl tracking-tight font-bold",
+      "body": "text-base leading-relaxed text-slate-300",
+      "labels": "uppercase text-xs tracking-[0.2em] font-mono text-cyan-400"
+    }
+  },
+  "colors": {
+    "background": "#030014",
+    "surface": "rgba(255, 255, 255, 0.03)",
+    "surface_hover": "rgba(255, 255, 255, 0.05)",
+    "border": "rgba(255, 255, 255, 0.1)",
+    "primary": "#8B5CF6",
+    "secondary": "#06B6D4",
+    "accent": "#EC4899",
+    "text_primary": "#F8FAFC",
+    "text_secondary": "#94A3B8"
+  },
+  "layout": {
+    "spacing_system": "p-4, p-8, p-12, p-24",
+    "container": "max-w-7xl mx-auto px-6 relative z-40",
+    "glassmorphism": "backdrop-blur-xl bg-[#030014]/40 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)]",
+    "bento_grid": "grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8"
+  },
+  "visual_system": {
+    "background_layers": [
+      {
+        "layer": 1,
+        "name": "Gradient Field",
+        "z_index": 0,
+        "implementation": "Fixed inset-0 div with absolute positioned radial gradients. Colors: violet-500/20, cyan-500/20. Apply blur-[120px]. Animate slowly using framer-motion."
+      },
+      {
+        "layer": 2,
+        "name": "Neural Grid & Particles",
+        "z_index": 10,
+        "implementation": "react-tsparticles canvas covering the viewport. Settings: linked lines (opacity 0.15, color #06B6D4), particles (size 1-2, color #8B5CF6), slow organic movement, mouse hover interaction (repel or grab). This creates the engineered, living digital universe feel."
+      },
+      {
+        "layer": 3,
+        "name": "Energy Waves",
+        "z_index": 20,
+        "implementation": "Absolute divs with repeating linear gradients or soft pink/violet noise textures on mix-blend-mode overlay to simulate frequency distortions."
+      },
+      {
+        "layer": 4,
+        "name": "Core Pulse",
+        "z_index": 30,
+        "implementation": "Central absolute element behind Hero text. Emits framer-motion expanding rings (scale 1 to 3, opacity 1 to 0) infinitely. Border color: #8B5CF6. Represents the heartbeat of Astreon."
+      }
+    ],
+    "mouse_parallax": "Wrap the main page content in a Framer Motion container that tracks mouse position and slightly translates the UI (x/y by -10px to 10px) inversely to the mouse, enhancing the 3D depth against the particle background."
+  },
+  "sections": [
+    {
+      "name": "Hero",
+      "layout": "Min-h-[90vh] flex flex-col items-center justify-center text-center relative z-40",
+      "elements": "Giant 'ASTREON' typography with bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-cyan-400 to-pink-400. Subtitle in monospace 'A LIVING DIGITAL UNIVERSE'. Primary CTA button with glassmorphism + inner neon glow. Core pulse anchored right behind the text."
+    },
+    {
+      "name": "About",
+      "layout": "py-32 Bento Grid mode",
+      "elements": "Grid cols 12. Left column (col-span-12 md:col-span-5) features the developer portrait with a soft violet overlay to maintain mystery. Right column (col-span-12 md:col-span-7) contains glassmorphism cards detailing background, mission, and the 'Astreon Core' intelligence."
+    },
+    {
+      "name": "Projects",
+      "layout": "py-32",
+      "elements": "Staggered grid of glass cards. Each project card has an abstract tech image. Hovering over a card triggers a border color transition to secondary (cyan) and slightly scales the image."
+    },
+    {
+      "name": "Skills",
+      "layout": "py-24 relative overflow-hidden",
+      "elements": "Background features a large kinetic marquee (very slow, low contrast text 'SYSTEM_PROTOCOLS // NEURAL_NODES'). Foreground contains floating glassmorphism badges displaying technical skills."
+    },
+    {
+      "name": "Contact",
+      "layout": "py-32 flex justify-center",
+      "elements": "A centered glassmorphism 'Control Panel' form. Inputs must have Shadcn UI logic but stripped down to pure minimalist borders (border-b only or subtle rounded rectangles with focus:ring-violet-500)."
+    }
+  ],
+  "media": {
+    "images": [
+      {
+        "url": "https://images.pexels.com/photos/10040316/pexels-photo-10040316.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "category": "developer_portrait",
+        "description": "A striking studio portrait of a woman illuminated by neon lights, used in the About section to represent the mysterious creator."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1754738381783-f9a2847bfef2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwxfHxkYXJrJTIwYWJzdHJhY3QlMjB0ZWNofGVufDB8fHx8MTc3NDkxMDc5NXww&ixlib=rb-4.1.0&q=85",
+        "category": "project_1",
+        "description": "Abstract swirling purple metallic texture for project card 1."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1762279389042-9439bfb6c155?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwyfHxkYXJrJTIwYWJzdHJhY3QlMjB0ZWNofGVufDB8fHx8MTc3NDkxMDc5NXww&ixlib=rb-4.1.0&q=85",
+        "category": "project_2",
+        "description": "Abstract neon lines forming a digital landscape for project card 2."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1761319659795-543075eaeaad?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwzfHxkYXJrJTIwYWJzdHJhY3QlMjB0ZWNofGVufDB8fHx8MTc3NDkxMDc5NXww&ixlib=rb-4.1.0&q=85",
+        "category": "project_3",
+        "description": "Abstract streaks of light on a dark background for project card 3."
+      },
+      {
+        "url": "https://images.pexels.com/photos/16023919/pexels-photo-16023919.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "category": "project_4",
+        "description": "HTML code displayed on a screen for project card 4."
+      }
+    ]
+  },
+  "dependencies": [
+    "framer-motion",
+    "react-tsparticles",
+    "tsparticles-engine",
+    "lucide-react",
+    "@fontsource/outfit",
+    "@fontsource/manrope",
+    "@fontsource/jetbrains-mono"
+  ],
+  "accessibility_and_testing": {
+    "testing_attributes": "All interactive and key informational elements MUST include a `data-testid` attribute (e.g., `data-testid=\"hero-cta-button\"`).",
+    "reduced_motion": "Respect `prefers-reduced-motion` for the core pulse and particles."
+  },
+  "instructions_to_main_agent": "CRITICAL: You are working with .js files, NOT .tsx files. Write all React components in pure JavaScript (.jsx/.js). Implement the multi-layer depth system exactly as described in visual_system.background_layers. Ensure layers z-index correctly (0 to 30) behind the content (z-40+). Use glassmorphism heavily (`backdrop-blur-xl bg-white/5` or `bg-[#030014]/40` with `border-white/10`) for all cards. Use react-tsparticles for the neural grid. Create a custom framer-motion component for the 'Core Pulse' (expanding rings). Strictly adhere to the electric violet, cyan, and deep void black color palette. Ensure the website has a calm but alive feel."
+}
