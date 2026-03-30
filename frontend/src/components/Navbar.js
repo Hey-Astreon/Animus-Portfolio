@@ -101,11 +101,11 @@ const Navbar = () => {
             data-testid="mobile-menu"
           >
             <div
-              className="absolute inset-0 bg-[#030014]/95 backdrop-blur-xl"
+              className="absolute inset-0 bg-[#030014]/95 backdrop-blur-xl pointer-events-auto"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
-              className="relative h-full flex flex-col items-center justify-center gap-8"
+              className="relative h-full flex flex-col items-center justify-center gap-8 pointer-events-none"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
@@ -115,7 +115,7 @@ const Navbar = () => {
                 <motion.a
                   key={link.name}
                   href={link.href}
-                  className="text-2xl font-heading font-bold text-white hover:text-violet-400 transition-colors"
+                  className="text-2xl font-heading font-bold text-white hover:text-violet-400 transition-colors pointer-events-auto"
                   onClick={() => setIsMobileMenuOpen(false)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -127,7 +127,7 @@ const Navbar = () => {
               ))}
               <motion.a
                 href="#contact"
-                className="mt-4 px-8 py-4 rounded-full text-lg font-semibold bg-gradient-to-r from-violet-600 to-cyan-600 text-white"
+                className="mt-4 px-8 py-4 rounded-full text-lg font-semibold bg-gradient-to-r from-violet-600 to-cyan-600 text-white pointer-events-auto"
                 onClick={() => setIsMobileMenuOpen(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
