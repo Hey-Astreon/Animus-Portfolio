@@ -6,7 +6,7 @@ import "@/App.css";
 import { useThemeStore } from './store/useStore';
 
 // Core Components
-import AnimusBackground from './components/AnimusCore/AnimusBackground';
+import CircuitBackground from './components/AnimusCore/CircuitBackground';
 import SystemHUD from './components/AnimusCore/SystemHUD';
 import ThemeToggle from './components/AnimusCore/ThemeToggle';
 
@@ -37,13 +37,13 @@ function App() {
     <div className="App relative" data-testid="app-container">
       {/* Scroll Progress Indicator */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-[2px] bg-[var(--animus-accent)] z-[60] origin-left"
+        className="fixed top-0 left-0 right-0 h-[2px] bg-[var(--astreon-accent)] z-[60] origin-left"
         style={{ scaleX }}
         data-testid="scroll-progress"
       />
 
       {/* Background System */}
-      <AnimusBackground />
+      <CircuitBackground />
 
       {/* System HUD */}
       <SystemHUD />
@@ -59,10 +59,12 @@ function App() {
         {/* Main Sections */}
         <main>
           <Hero />
-          <CoreIdentity />
-          <SystemModules />
-          <CapabilitiesMatrix />
-          <TransmissionInterface />
+          <div className="section-mask">
+            <CoreIdentity />
+            <SystemModules />
+            <CapabilitiesMatrix />
+            <TransmissionInterface />
+          </div>
         </main>
 
         {/* Footer */}

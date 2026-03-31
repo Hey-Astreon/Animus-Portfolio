@@ -22,13 +22,12 @@ const ThemeToggle = () => {
 
   return (
     <motion.button
-      className="fixed bottom-5 left-5 z-50 w-10 h-10 flex items-center justify-center backdrop-blur-xl rounded-sm cursor-pointer"
-      style={{ background: colors.surface, border: `1px solid ${colors.border}` }}
+      className="fixed bottom-6 left-6 z-50 w-10 h-10 flex items-center justify-center glass border-astreon-border/30 rounded-none cursor-pointer"
       onClick={handleToggle}
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 2.5, duration: 0.5 }}
-      whileHover={{ scale: 1.05 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1, duration: 0.5 }}
+      whileHover={{ scale: 1.05, borderColor: 'var(--astreon-accent)' }}
       whileTap={{ scale: 0.95 }}
       data-testid="theme-toggle"
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
@@ -37,7 +36,8 @@ const ThemeToggle = () => {
         key={theme}
         initial={{ rotate: -20, opacity: 0 }}
         animate={{ rotate: 0, opacity: 1 }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        className={theme === 'dark' ? 'text-astreon-accent' : 'text-astreon-text'}
       >
         {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
       </motion.div>

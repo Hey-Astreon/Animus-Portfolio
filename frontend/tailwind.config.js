@@ -5,11 +5,21 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["Space Grotesk", "sans-serif"],
-        body: ["Space Grotesk", "sans-serif"],
-        mono: ["IBM Plex Mono", "monospace"],
+        display: ["Outfit", "sans-serif"],
+        body: ["Manrope", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
       },
       colors: {
+        astreon: {
+          bg: "var(--astreon-bg)",
+          "bg-alt": "var(--astreon-bg-alt)",
+          surface: "var(--astreon-surface)",
+          "surface-hover": "var(--astreon-surface-hover)",
+          border: "var(--astreon-border)",
+          accent: "var(--astreon-accent)",
+          text: "var(--astreon-text-primary)",
+          "text-muted": "var(--astreon-text-secondary)",
+        },
         animus: {
           bg: "var(--animus-bg)",
           "bg-soft": "var(--animus-bg-soft)",
@@ -18,9 +28,6 @@ module.exports = {
           text: "var(--animus-text)",
           "text-muted": "var(--animus-text-muted)",
           accent: "var(--animus-accent)",
-          "accent-soft": "var(--animus-accent-soft)",
-          glow: "var(--animus-glow)",
-          grid: "var(--animus-grid)",
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

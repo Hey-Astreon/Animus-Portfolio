@@ -22,12 +22,16 @@ const useSystemStore = create((set) => ({
   loadTime: 0,
   systemStatus: 'initializing',
   currentSection: 'hero',
+  target: 'SYSTEM_IDLE',
+  focusStatus: 'SCANNING',
   
   setFps: (fps) => set({ fps }),
   setPerformance: (performance) => set({ performance }),
   setLoadTime: (loadTime) => set({ loadTime }),
   setSystemStatus: (systemStatus) => set({ systemStatus }),
   setCurrentSection: (currentSection) => set({ currentSection }),
+  setTarget: (target) => set({ target }),
+  setFocusStatus: (focusStatus) => set({ focusStatus }),
 }));
 
 export { useThemeStore, useSystemStore };

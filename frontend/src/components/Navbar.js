@@ -30,44 +30,38 @@ const Navbar = () => {
   return (
     <>
       <motion.nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-3' : 'py-5'}`}
-        initial={{ y: -80 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4' : 'py-8'}`}
+        initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         data-testid="navbar"
       >
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <div
-            className="flex items-center justify-between transition-all duration-300"
-            style={scrolled ? { 
-              background: colors.surface, 
-              backdropFilter: 'blur(12px)',
-              border: `1px solid ${colors.border}`,
-              padding: '10px 20px',
-            } : {}}
+            className={`flex items-center justify-between transition-all duration-500 rounded-full px-6 py-3 ${scrolled ? 'glass border-astreon-border/50' : 'bg-transparent border-transparent'}`}
           >
-            <a href="#hero" className="font-display text-base font-semibold tracking-tight" data-testid="navbar-logo">
+            <a href="#hero" className="font-display text-lg font-black tracking-tighter text-astreon-text" data-testid="navbar-logo">
               ASTREON
             </a>
 
             {/* Desktop */}
-            <div className="hidden md:flex items-center gap-7">
+            <div className="hidden md:flex items-center gap-10">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="group flex items-center gap-1.5 text-[13px] text-[var(--animus-text-muted)] hover:text-[var(--animus-text)] transition-colors duration-150"
+                  className="nav-link-premium group flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-astreon-text-muted hover:text-astreon-text transition-colors duration-300 uppercase px-1 py-1"
                   data-testid={`nav-link-${link.name.toLowerCase()}`}
                 >
-                  <span className="font-mono text-[9px] opacity-40 group-hover:opacity-80 transition-opacity">{link.code}</span>
+                  <span className="opacity-40 group-hover:opacity-100 transition-opacity text-astreon-accent">{link.code}</span>
                   <span>{link.name}</span>
                 </a>
               ))}
             </div>
 
             <div className="hidden md:block">
-              <a href="#transmission" className="animus-button-ghost text-[11px] py-2 px-4" data-testid="navbar-cta">
-                Contact
+              <a href="#transmission" className="border border-astreon-border/30 px-6 py-2 rounded-full text-[9px] font-mono tracking-widest uppercase text-astreon-text hover:border-astreon-accent/50 hover:bg-astreon-accent/5 transition-all duration-300" data-testid="navbar-cta">
+                Establish Link
               </a>
             </div>
 

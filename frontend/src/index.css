@@ -1,30 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Unified Theme System */
+/* Astreon Interface - Premium Color System */
 :root {
-  --animus-bg: #f8f9fc;
-  --animus-bg-soft: #ffffff;
-  --animus-surface: rgba(255, 255, 255, 0.7);
-  --animus-border: rgba(0, 0, 0, 0.06);
-  --animus-text: #0a0a0f;
-  --animus-text-muted: #6b7280;
-  --animus-accent: #2563eb;
-  --animus-accent-soft: rgba(37, 99, 235, 0.08);
+  /* Light Mode (Default) */
+  --astreon-bg: #FFFFFF;
+  --astreon-bg-alt: #F8FAFC;
+  --astreon-text-primary: #000000;
+  --astreon-text-secondary: #475569;
+  --astreon-surface: rgba(0, 0, 0, 0.03);
+  --astreon-surface-hover: rgba(0, 0, 0, 0.06);
+  --astreon-border: rgba(0, 0, 0, 0.08);
+  --astreon-accent: #0EA5E9; /* Sky Blue */
+  --astreon-glow: transparent;
+  
+  /* Legacy compatibility */
+  --animus-bg: var(--astreon-bg);
+  --animus-text: var(--astreon-text-primary);
+  --animus-text-muted: var(--astreon-text-secondary);
+  --animus-border: var(--astreon-border);
+  --animus-accent: var(--astreon-accent);
 }
 
 [data-theme="dark"] {
-  --animus-bg: #08080c;
-  --animus-bg-soft: #0c0c12;
-  --animus-surface: rgba(12, 12, 18, 0.8);
-  --animus-border: rgba(255, 255, 255, 0.06);
-  --animus-text: #f8f9fc;
-  --animus-text-muted: #9ca3af;
-  --animus-accent: #60a5fa;
-  --animus-accent-soft: rgba(96, 165, 250, 0.08);
+  /* Dark Mode */
+  --astreon-bg: #000000;
+  --astreon-bg-alt: #0A0A0A;
+  --astreon-text-primary: #FFFFFF;
+  --astreon-text-secondary: #94A3B8;
+  --astreon-surface: rgba(255, 255, 255, 0.04);
+  --astreon-surface-hover: rgba(255, 255, 255, 0.08);
+  --astreon-border: rgba(255, 255, 255, 0.12);
+  --astreon-accent: #0EA5E9; /* Sky Blue */
+  --astreon-glow: 0 0 15px rgba(14, 165, 233, 0.3);
 }
 
 /* Base */
@@ -32,97 +43,83 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Space Grotesk', -apple-system, sans-serif;
-  background-color: var(--animus-bg);
-  color: var(--animus-text);
+  font-family: 'Manrope', -apple-system, sans-serif;
+  background-color: var(--astreon-bg);
+  color: var(--astreon-text-primary);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Typography */
-.font-display { font-family: 'Space Grotesk', sans-serif; }
-.font-mono { font-family: 'IBM Plex Mono', monospace; }
+.font-display { font-family: 'Outfit', sans-serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--animus-border); border-radius: 2px; }
+/* Utilities */
+.glass {
+  background: var(--astreon-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--astreon-border);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.1);
+}
 
-/* Selection */
-::selection { background: var(--animus-accent-soft); color: var(--animus-accent); }
+.glow-sky {
+  box-shadow: var(--astreon-glow);
+}
 
-/* Section Title */
-.section-title {
-  font-size: clamp(1.75rem, 4vw, 3rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+.luminescent-text {
+  text-shadow: 0 0 0px transparent;
+  transition: text-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .luminescent-text {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.1), 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+/* Monochromatic Hover States */
+.nav-link-premium {
+  position: relative;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link-premium::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--astreon-accent);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link-premium:hover::after {
+  width: 100%;
+}
+
+:root .nav-link-premium:hover {
+  background-color: #F8FAFC;
+}
+
+[data-theme="dark"] .nav-link-premium:hover {
+  background-color: transparent;
 }
 
 /* Performance hints */
 .module-card {
   padding: 24px;
-  background: var(--animus-bg-soft);
-  border: 1px solid var(--animus-border);
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  background: var(--astreon-surface);
+  border: 1px solid var(--astreon-border);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
   transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Buttons */
-.animus-button {
-  position: relative;
-  padding: 11px 24px;
-  font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  background: var(--animus-text);
-  color: var(--animus-bg);
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-  transition: transform 0.15s ease;
-}
-
-.animus-button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--animus-accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s ease;
-}
-
-.animus-button:hover::before { transform: scaleX(1); }
-.animus-button span { position: relative; z-index: 1; }
-.animus-button:hover { color: white; }
-
-.animus-button-ghost {
-  padding: 11px 24px;
-  font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  background: transparent;
-  color: var(--animus-text);
-  border: 1px solid var(--animus-border);
-  cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
-}
-
-.animus-button-ghost:hover {
-  border-color: var(--animus-text);
-  background: var(--animus-accent-soft);
 }
 
 /* Theme Transition - Optimized */
 .theme-transition,
 .theme-transition *:not(canvas):not(svg) {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Focus */
