@@ -1,25 +1,26 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useThemeStore } from '../../store/useStore';
 
-// CSS-based Animus Background with enhanced depth and parallax
-const AnimusBackground = () => {
+// Unified Astreon Core Background System
+const AstreonCoreBackground = () => {
   const theme = useThemeStore((state) => state.theme);
   const containerRef = useRef(null);
+  const canvasRef = useRef(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
+  const animationRef = useRef(null);
   
   // Scroll-based transforms
   const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 50, damping: 20 });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 25 });
   
-  // Depth-based scroll effects
-  const gridScale = useTransform(smoothProgress, [0, 1], [1, 0.95]);
-  const gridOpacity = useTransform(smoothProgress, [0, 0.5, 1], [0.5, 0.3, 0.2]);
-  const ringsScale = useTransform(smoothProgress, [0, 1], [1, 0.85]);
-  const ringsY = useTransform(smoothProgress, [0, 1], [0, -50]);
+  // Depth transforms
+  const gridOpacity = useTransform(smoothProgress, [0, 0.3, 1], [0.4, 0.25, 0.15]);
+  const orbScale = useTransform(smoothProgress, [0, 0.5], [1, 0.6]);
+  const orbOpacity = useTransform(smoothProgress, [0, 0.4], [1, 0.3]);
 
-  // Check for mobile
+  // Check mobile
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -27,178 +28,166 @@ const AnimusBackground = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Smooth mouse parallax (disabled on mobile)
+  // Smooth mouse tracking
   useEffect(() => {
     if (isMobile) return;
     
-    let rafId;
-    const targetPos = { x: 0, y: 0 };
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
     
     const handleMouseMove = (e) => {
-      targetPos.x = (e.clientX / window.innerWidth - 0.5) * 30;
-      targetPos.y = (e.clientY / window.innerHeight - 0.5) * 20;
+      targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 2;
     };
 
     const animate = () => {
-      setMousePos(prev => ({
-        x: prev.x + (targetPos.x - prev.x) * 0.05,
-        y: prev.y + (targetPos.y - prev.y) * 0.05
-      }));
-      rafId = requestAnimationFrame(animate);
+      currentX += (targetX - currentX) * 0.03;
+      currentY += (targetY - currentY) * 0.03;
+      setMousePos({ x: currentX * 15, y: currentY * 10 });
+      animationRef.current = requestAnimationFrame(animate);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    rafId = requestAnimationFrame(animate);
+    animationRef.current = requestAnimationFrame(animate);
     
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(rafId);
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
   }, [isMobile]);
+
+  // Theme-aware colors
+  const colors = useMemo(() => ({
+    bg: theme === 'light' ? '#f8f9fc' : '#08080c',
+    bgEnd: theme === 'light' ? '#eef0f5' : '#0c0c12',
+    grid: theme === 'light' ? 'rgba(0,0,0,0.025)' : 'rgba(255,255,255,0.015)',
+    beam: theme === 'light' ? 'rgba(37, 99, 235, 0.06)' : 'rgba(96, 165, 250, 0.04)',
+    orb: theme === 'light' ? '#2563eb' : '#60a5fa',
+    orbGlow: theme === 'light' ? 'rgba(37, 99, 235, 0.15)' : 'rgba(96, 165, 250, 0.1)',
+  }), [theme]);
 
   return (
     <div 
       ref={containerRef}
-      className="fixed inset-0 z-0 overflow-hidden"
-      data-testid="animus-background"
+      className="fixed inset-0 z-0 overflow-hidden transition-colors duration-500"
+      data-testid="astreon-background"
       style={{
-        background: theme === 'light' 
-          ? 'linear-gradient(180deg, #f8f9fc 0%, #e8eaef 100%)'
-          : 'linear-gradient(180deg, #0a0a0f 0%, #111118 100%)'
+        background: `linear-gradient(180deg, ${colors.bg} 0%, ${colors.bgEnd} 100%)`
       }}
     >
-      {/* Grid Pattern with scroll depth */}
+      {/* Grid Layer */}
       <motion.div 
         className="absolute inset-0"
         style={{
-          scale: gridScale,
           opacity: gridOpacity,
-          backgroundImage: theme === 'light'
-            ? `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-               linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`
-            : `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-               linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-          transform: `translate(${mousePos.x * 0.3}px, ${mousePos.y * 0.3}px)`,
+          backgroundImage: `
+            linear-gradient(${colors.grid} 1px, transparent 1px),
+            linear-gradient(90deg, ${colors.grid} 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px',
+          transform: `translate(${mousePos.x * 0.2}px, ${mousePos.y * 0.2}px)`,
         }}
       />
 
-      {/* Volumetric Light Beams with depth */}
-      {!isMobile && [...Array(6)].map((_, i) => (
+      {/* Vertical Light Structures */}
+      {!isMobile && [...Array(5)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-[1px]"
+          className="absolute w-px"
           style={{
-            left: `${15 + i * 15}%`,
-            top: '-10%',
-            height: '120%',
-            background: theme === 'light'
-              ? 'linear-gradient(180deg, transparent, rgba(37, 99, 235, 0.12), transparent)'
-              : 'linear-gradient(180deg, transparent, rgba(96, 165, 250, 0.08), transparent)',
-            transform: `translateX(${mousePos.x * (0.2 + i * 0.1)}px)`,
+            left: `${18 + i * 18}%`,
+            top: 0,
+            height: '100%',
+            background: `linear-gradient(180deg, transparent 10%, ${colors.beam} 50%, transparent 90%)`,
+            transform: `translateX(${mousePos.x * (0.1 + i * 0.05)}px)`,
           }}
-          animate={{
-            opacity: [0.15, 0.3, 0.15],
-          }}
-          transition={{
-            duration: 6 + i * 1.5,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: i * 0.3,
-          }}
+          animate={{ opacity: [0.5, 0.8, 0.5] }}
+          transition={{ duration: 4 + i, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}
 
-      {/* Central Rings with scroll depth */}
+      {/* Astreon Core Orb */}
       <motion.div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
         style={{
-          scale: ringsScale,
-          y: ringsY,
-          x: mousePos.x * -0.2,
+          scale: orbScale,
+          opacity: orbOpacity,
+          x: mousePos.x * -0.3,
+          y: mousePos.y * -0.2,
         }}
       >
+        {/* Outer rings */}
         {[1, 2, 3].map((ring) => (
           <motion.div
             key={ring}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border"
             style={{
-              width: `${ring * 200}px`,
-              height: `${ring * 200}px`,
+              width: `${ring * 120}px`,
+              height: `${ring * 120}px`,
               borderColor: theme === 'light' 
-                ? `rgba(0, 0, 0, ${0.04 / ring})`
-                : `rgba(255, 255, 255, ${0.025 / ring})`,
+                ? `rgba(37, 99, 235, ${0.08 / ring})`
+                : `rgba(96, 165, 250, ${0.05 / ring})`,
             }}
-            animate={{
-              rotate: ring % 2 === 0 ? 360 : -360,
-            }}
-            transition={{
-              rotate: { duration: 80 + ring * 30, repeat: Infinity, ease: 'linear' },
-            }}
+            animate={{ rotate: ring % 2 === 0 ? 360 : -360 }}
+            transition={{ duration: 60 + ring * 20, repeat: Infinity, ease: 'linear' }}
           />
         ))}
         
-        {/* Center Core */}
-        <motion.div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full"
+        {/* Core orb */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
-            background: theme === 'light' ? '#2563eb' : '#60a5fa',
+            width: '12px',
+            height: '12px',
+            background: colors.orb,
           }}
           animate={{
-            boxShadow: theme === 'light'
-              ? ['0 0 15px rgba(37, 99, 235, 0.3)', '0 0 25px rgba(37, 99, 235, 0.5)', '0 0 15px rgba(37, 99, 235, 0.3)']
-              : ['0 0 15px rgba(96, 165, 250, 0.2)', '0 0 25px rgba(96, 165, 250, 0.4)', '0 0 15px rgba(96, 165, 250, 0.2)']
+            boxShadow: [
+              `0 0 20px ${colors.orbGlow}, 0 0 40px ${colors.orbGlow}`,
+              `0 0 30px ${colors.orbGlow}, 0 0 60px ${colors.orbGlow}`,
+              `0 0 20px ${colors.orbGlow}, 0 0 40px ${colors.orbGlow}`,
+            ],
+            scale: [1, 1.1, 1],
           }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         />
-      </motion.div>
 
-      {/* Floating Geometric Elements with depth */}
-      {!isMobile && [...Array(4)].map((_, i) => (
+        {/* Inner pulse ring */}
         <motion.div
-          key={`geo-${i}`}
-          className="absolute w-3 h-3 border rotate-45"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border"
           style={{
-            left: `${20 + i * 20}%`,
-            top: `${30 + (i % 2) * 30}%`,
-            borderColor: theme === 'light' 
-              ? 'rgba(37, 99, 235, 0.12)'
-              : 'rgba(96, 165, 250, 0.08)',
-            transform: `translate(${mousePos.x * (0.3 + i * 0.15)}px, ${mousePos.y * (0.3 + i * 0.1)}px) rotate(45deg)`,
+            width: '40px',
+            height: '40px',
+            borderColor: theme === 'light' ? 'rgba(37, 99, 235, 0.2)' : 'rgba(96, 165, 250, 0.15)',
           }}
           animate={{
-            y: [0, -15, 0],
-            opacity: [0.4, 0.7, 0.4],
+            scale: [1, 1.5, 1],
+            opacity: [0.5, 0, 0.5],
           }}
-          transition={{
-            duration: 5 + i,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: i * 0.6,
-          }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeOut' }}
         />
-      ))}
+      </motion.div>
 
-      {/* Gradient Fog Overlay */}
+      {/* Depth fog */}
       <div 
         className="absolute inset-0 pointer-events-none transition-opacity duration-500"
         style={{
           background: theme === 'light'
-            ? 'radial-gradient(ellipse at center, transparent 25%, rgba(248, 249, 252, 0.85) 75%)'
-            : 'radial-gradient(ellipse at center, transparent 25%, rgba(10, 10, 15, 0.9) 75%)'
+            ? 'radial-gradient(ellipse at center, transparent 20%, rgba(248, 249, 252, 0.8) 70%)'
+            : 'radial-gradient(ellipse at center, transparent 20%, rgba(8, 8, 12, 0.85) 70%)'
         }}
       />
 
-      {/* Subtle Noise Texture */}
+      {/* Subtle noise */}
       <div 
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
         style={{
-          opacity: theme === 'light' ? 0.015 : 0.02,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+          opacity: theme === 'light' ? 0.012 : 0.02,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
         }}
       />
     </div>
   );
 };
 
-export default AnimusBackground;
+export default AstreonCoreBackground;

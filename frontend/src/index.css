@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Unified Theme System */
 :root {
-  /* Light Theme (Animus) */
   --animus-bg: #f8f9fc;
   --animus-bg-soft: #ffffff;
   --animus-surface: rgba(255, 255, 255, 0.7);
@@ -13,111 +13,76 @@
   --animus-text: #0a0a0f;
   --animus-text-muted: #6b7280;
   --animus-accent: #2563eb;
-  --animus-accent-soft: rgba(37, 99, 235, 0.1);
-  --animus-glow: rgba(37, 99, 235, 0.15);
-  --animus-grid: rgba(0, 0, 0, 0.03);
-  
-  --transition-theme: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  --animus-accent-soft: rgba(37, 99, 235, 0.08);
 }
 
 [data-theme="dark"] {
-  --animus-bg: #0a0a0f;
-  --animus-bg-soft: #141419;
-  --animus-surface: rgba(20, 20, 25, 0.8);
+  --animus-bg: #08080c;
+  --animus-bg-soft: #0c0c12;
+  --animus-surface: rgba(12, 12, 18, 0.8);
   --animus-border: rgba(255, 255, 255, 0.06);
   --animus-text: #f8f9fc;
   --animus-text-muted: #9ca3af;
   --animus-accent: #60a5fa;
-  --animus-accent-soft: rgba(96, 165, 250, 0.1);
-  --animus-glow: rgba(96, 165, 250, 0.1);
-  --animus-grid: rgba(255, 255, 255, 0.02);
+  --animus-accent-soft: rgba(96, 165, 250, 0.08);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+/* Base */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Space Grotesk', -apple-system, sans-serif;
   background-color: var(--animus-bg);
   color: var(--animus-text);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  transition: background-color var(--transition-theme), color var(--transition-theme);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Typography */
-.font-display {
-  font-family: 'Space Grotesk', sans-serif;
-}
+.font-display { font-family: 'Space Grotesk', sans-serif; }
+.font-mono { font-family: 'IBM Plex Mono', monospace; }
 
-.font-mono {
-  font-family: 'IBM Plex Mono', monospace;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--animus-border);
-  border-radius: 2px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--animus-accent);
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--animus-border); border-radius: 2px; }
 
 /* Selection */
-::selection {
-  background: var(--animus-accent-soft);
-  color: var(--animus-accent);
+::selection { background: var(--animus-accent-soft); color: var(--animus-accent); }
+
+/* Section Title */
+.section-title {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
-/* Animus Grid Background */
-.animus-grid {
-  background-image: 
-    linear-gradient(var(--animus-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--animus-grid) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-/* Subtle Surface */
-.animus-surface {
-  background: var(--animus-surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+/* Module Card */
+.module-card {
+  padding: 24px;
+  background: var(--animus-bg-soft);
   border: 1px solid var(--animus-border);
-  transition: all var(--transition-theme);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  will-change: transform;
 }
 
-/* Clean Button Styles - Enhanced micro-interactions */
+/* Buttons */
 .animus-button {
   position: relative;
-  padding: 12px 28px;
+  padding: 11px 24px;
   font-weight: 500;
-  font-size: 14px;
-  letter-spacing: 0.05em;
+  font-size: 13px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   background: var(--animus-text);
   color: var(--animus-bg);
   border: none;
   cursor: pointer;
   overflow: hidden;
-  transition: transform 0.15s ease, color 0.2s ease;
-  will-change: transform;
+  transition: transform 0.15s ease;
 }
 
 .animus-button::before {
@@ -127,35 +92,24 @@ body {
   background: var(--animus-accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.25s ease;
+  transition: transform 0.2s ease;
 }
 
-.animus-button:hover::before {
-  transform: scaleX(1);
-}
+.animus-button:hover::before { transform: scaleX(1); }
+.animus-button span { position: relative; z-index: 1; }
+.animus-button:hover { color: white; }
 
-.animus-button span {
-  position: relative;
-  z-index: 1;
-}
-
-.animus-button:hover {
-  color: white;
-}
-
-/* Ghost Button - Enhanced */
 .animus-button-ghost {
-  padding: 12px 28px;
+  padding: 11px 24px;
   font-weight: 500;
-  font-size: 14px;
-  letter-spacing: 0.05em;
+  font-size: 13px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   background: transparent;
   color: var(--animus-text);
   border: 1px solid var(--animus-border);
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
-  will-change: transform;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .animus-button-ghost:hover {
@@ -163,135 +117,22 @@ body {
   background: var(--animus-accent-soft);
 }
 
-/* Status Indicator */
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 10px #22c55e;
-  animation: pulse-status 2s ease-in-out infinite;
+/* Theme Transition */
+.theme-transition,
+.theme-transition * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
 
-@keyframes pulse-status {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* HUD Text */
-.hud-text {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--animus-text-muted);
-}
-
-/* Section Title */
-.section-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
-/* Thin Line */
-.line-thin {
-  height: 1px;
-  background: var(--animus-border);
-}
-
-/* Focus States */
-a:focus-visible,
-button:focus-visible {
+/* Focus */
+a:focus-visible, button:focus-visible {
   outline: 2px solid var(--animus-accent);
   outline-offset: 2px;
 }
 
-/* Smooth Theme Transition - Refined */
-.theme-transitioning,
-.theme-transitioning * {
-  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-              color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* Performance optimizations */
-@media (prefers-reduced-motion: no-preference) {
-  .module-card,
-  .animus-button,
-  .animus-button-ghost {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
-}
-
-/* Volumetric Light Effect */
-.volumetric-light {
-  position: absolute;
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--animus-accent-soft) 20%,
-    var(--animus-accent-soft) 80%,
-    transparent
-  );
-  opacity: 0.5;
-}
-
-/* Fog Effect */
-.fog-layer {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 0%,
-    var(--animus-bg) 70%
-  );
-  pointer-events: none;
-}
-
-/* Module Card - Enhanced with micro-interactions */
-.module-card {
-  position: relative;
-  padding: 32px;
-  background: var(--animus-bg-soft);
-  border: 1px solid var(--animus-border);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  will-change: transform;
-}
-
-.module-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--animus-accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.module-card:hover::before {
-  transform: scaleX(1);
-}
-
-.module-card:hover {
-  border-color: var(--animus-accent);
-}
-
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }

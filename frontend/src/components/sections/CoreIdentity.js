@@ -1,17 +1,15 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { User, Code, Briefcase } from 'lucide-react';
+import { useThemeStore } from '../../store/useStore';
 
 const CoreIdentity = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const theme = useThemeStore((state) => state.theme);
   
-  // Scroll-based depth effect
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start']
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   const stats = [
     { label: 'Years Active', value: '5+' },
@@ -19,156 +17,94 @@ const CoreIdentity = () => {
     { label: 'Global Clients', value: '30+' },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
+  const cards = [
+    { icon: User, title: 'Identity', desc: 'Full-Stack Developer & Digital Architect based globally, available for remote collaboration.' },
+    { icon: Code, title: 'Expertise', desc: 'Specialized in React, Node.js, Python, AI integration, and system architecture.' },
+    { icon: Briefcase, title: 'Mission', desc: 'Creating intelligent systems that solve real problems with elegant, efficient solutions.' },
+  ];
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 25 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] } },
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, x: 30 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: { duration: 0.5, ease: 'easeOut' }
-    },
-    hover: {
-      y: -4,
-      borderColor: 'var(--animus-accent)',
-      transition: { duration: 0.2, ease: 'easeOut' }
-    }
-  };
+  const accentColor = theme === 'light' ? '#2563eb' : '#60a5fa';
 
   return (
-    <section
-      id="identity"
-      ref={ref}
-      className="relative py-32 z-10"
-      data-testid="identity-section"
-    >
-      <motion.div 
-        className="max-w-6xl mx-auto px-6"
-        style={{ y }}
-      >
-        {/* Section Header */}
+    <section id="identity" ref={ref} className="relative py-28 z-10" data-testid="identity-section">
+      <motion.div className="max-w-6xl mx-auto px-6" style={{ y }}>
+        {/* Header */}
         <motion.div
-          className="flex items-center gap-4 mb-16"
-          variants={itemVariants}
+          className="flex items-center gap-4 mb-14"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
+          variants={fadeUp}
         >
-          <div className="w-2 h-2 bg-[var(--animus-accent)]" />
-          <span className="hud-text">Core_Identity</span>
-          <div className="flex-1 h-[1px] bg-[var(--animus-border)]" />
-          <span className="hud-text opacity-50">01</span>
+          <div className="w-1.5 h-1.5" style={{ background: accentColor }} />
+          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[var(--animus-text-muted)]">Core_Identity</span>
+          <div className="flex-1 h-px bg-[var(--animus-border)]" />
+          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[var(--animus-text-muted)] opacity-50">01</span>
         </motion.div>
 
-        <motion.div 
-          className="grid grid-cols-1 lg:grid-cols-2 gap-16"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-        >
-          {/* Left: Content */}
-          <motion.div variants={itemVariants}>
-            <h2 className="section-title mb-8">
-              Building the
-              <br />
-              <span className="text-[var(--animus-accent)]">digital future</span>
-            </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
+          {/* Left */}
+          <motion.div initial="hidden" animate={isInView ? 'visible' : 'hidden'} variants={{ visible: { transition: { staggerChildren: 0.1 } } }}>
+            <motion.h2 className="section-title mb-7" variants={fadeUp}>
+              Building the<br /><span style={{ color: accentColor }}>digital future</span>
+            </motion.h2>
+            <motion.p className="text-[var(--animus-text-muted)] text-lg leading-relaxed mb-5" variants={fadeUp}>
+              I'm a full-stack developer specializing in creating intelligent, scalable systems. My approach combines clean architecture with cutting-edge technology.
+            </motion.p>
+            <motion.p className="text-[var(--animus-text-muted)] leading-relaxed mb-8 opacity-80" variants={fadeUp}>
+              The Astreon system represents my philosophy — technology should be precise, purposeful, and powerful.
+            </motion.p>
 
-            <p className="text-[var(--animus-text-muted)] text-lg leading-relaxed mb-6">
-              I'm a full-stack developer specializing in creating intelligent,
-              scalable systems. My approach combines clean architecture with
-              cutting-edge technology to deliver solutions that exceed expectations.
-            </p>
-
-            <p className="text-[var(--animus-text-muted)] leading-relaxed mb-8">
-              The Astreon system represents my philosophy — technology should be
-              precise, purposeful, and powerful. Every line of code serves a function,
-              every design decision has meaning.
-            </p>
-
-            {/* Stats with number animation */}
-            <div className="grid grid-cols-3 gap-6">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
+            {/* Stats */}
+            <motion.div className="grid grid-cols-3 gap-5" variants={fadeUp}>
+              {stats.map((s, i) => (
+                <motion.div 
+                  key={s.label} 
                   className="text-center"
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.03 }}
                   transition={{ duration: 0.15 }}
-                  data-testid={`stat-${index}`}
+                  data-testid={`stat-${i}`}
                 >
-                  <motion.div 
-                    className="text-3xl font-display font-semibold mb-1"
-                    initial={{ opacity: 0 }}
-                    animate={isInView ? { opacity: 1 } : {}}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                  >
-                    {stat.value}
-                  </motion.div>
-                  <div className="hud-text opacity-60">{stat.label}</div>
+                  <div className="text-2xl font-display font-semibold mb-0.5">{s.value}</div>
+                  <div className="font-mono text-[9px] tracking-wider uppercase text-[var(--animus-text-muted)] opacity-70">{s.label}</div>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Right: Info Cards with micro-interactions */}
-          <motion.div className="space-y-4" variants={containerVariants}>
-            {[
-              {
-                icon: User,
-                title: 'Identity',
-                description: 'Full-Stack Developer & Digital Architect based globally, available for remote collaboration.',
-              },
-              {
-                icon: Code,
-                title: 'Expertise',
-                description: 'Specialized in React, Node.js, Python, AI integration, and system architecture.',
-              },
-              {
-                icon: Briefcase,
-                title: 'Mission',
-                description: 'Creating intelligent systems that solve real problems with elegant, efficient solutions.',
-              },
-            ].map((item, index) => (
+          {/* Right - Cards */}
+          <motion.div 
+            className="space-y-3"
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            variants={{ visible: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } } }}
+          >
+            {cards.map((card) => (
               <motion.div
-                key={item.title}
-                className="module-card cursor-default"
-                variants={cardVariants}
-                whileHover="hover"
-                data-testid={`identity-card-${item.title.toLowerCase()}`}
+                key={card.title}
+                className="module-card group"
+                variants={fadeUp}
+                whileHover={{ y: -3, borderColor: accentColor }}
+                transition={{ duration: 0.15 }}
+                data-testid={`identity-card-${card.title.toLowerCase()}`}
               >
                 <div className="flex items-start gap-4">
-                  <motion.div 
-                    className="p-2 border border-[var(--animus-border)] transition-colors duration-200"
-                    whileHover={{ borderColor: 'var(--animus-accent)' }}
-                  >
-                    <item.icon className="w-5 h-5 text-[var(--animus-accent)]" />
-                  </motion.div>
+                  <div className="p-2 border border-[var(--animus-border)] group-hover:border-[var(--animus-accent)] transition-colors duration-150">
+                    <card.icon className="w-4 h-4" style={{ color: accentColor }} />
+                  </div>
                   <div>
-                    <h3 className="font-display font-semibold mb-2">{item.title}</h3>
-                    <p className="text-sm text-[var(--animus-text-muted)] leading-relaxed">
-                      {item.description}
-                    </p>
+                    <h3 className="font-display font-semibold mb-1.5 text-sm">{card.title}</h3>
+                    <p className="text-[13px] text-[var(--animus-text-muted)] leading-relaxed opacity-80">{card.desc}</p>
                   </div>
                 </div>
               </motion.div>
             ))}
           </motion.div>
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   );

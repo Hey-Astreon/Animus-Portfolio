@@ -1,22 +1,9 @@
-/* Astreon Animus Interface Styles */
-
 .App {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
 }
 
-/* Ensure smooth theme transitions */
-.App * {
-  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
-}
-
-/* Canvas container */
-canvas {
-  display: block;
-}
-
-/* Ensure Three.js canvas doesn't block interactions */
-.fixed canvas {
-  pointer-events: none;
-}
+/* Performance hints */
+canvas { display: block; }
+.fixed canvas { pointer-events: none; }

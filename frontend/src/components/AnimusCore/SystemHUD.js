@@ -1,165 +1,110 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useThemeStore, useSystemStore } from '../../store/useStore';
 
 const SystemHUD = () => {
-  const { fps, performance, systemStatus } = useSystemStore();
   const theme = useThemeStore((state) => state.theme);
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [displayFps, setDisplayFps] = useState(60);
-  const [displayPerf, setDisplayPerf] = useState(98);
-  const [loadValue, setLoadValue] = useState(94);
-  const frameRef = useRef(0);
-  const lastTimeRef = useRef(Date.now());
+  const systemStatus = useSystemStore((state) => state.systemStatus);
+  const [time, setTime] = useState(new Date());
+  const [fps, setFps] = useState(60);
+  const [load, setLoad] = useState(96);
+  const frameCount = useRef(0);
+  const lastTime = useRef(Date.now());
   
-  // Realistic FPS counter with smooth fluctuation
+  // Real FPS counter
   useEffect(() => {
-    let animationId;
-    const { setFps } = useSystemStore.getState();
-    
-    const updateFPS = () => {
-      frameRef.current++;
+    let rafId;
+    const countFrame = () => {
+      frameCount.current++;
       const now = Date.now();
-      
-      if (now - lastTimeRef.current >= 1000) {
-        const actualFps = frameRef.current;
-        setFps(actualFps);
-        // Smooth display FPS (fluctuates 58-61)
-        setDisplayFps(Math.min(61, Math.max(58, actualFps + Math.floor(Math.random() * 4) - 2)));
-        frameRef.current = 0;
-        lastTimeRef.current = now;
+      if (now - lastTime.current >= 1000) {
+        setFps(Math.min(60, Math.max(58, frameCount.current)));
+        frameCount.current = 0;
+        lastTime.current = now;
       }
-      
-      animationId = requestAnimationFrame(updateFPS);
+      rafId = requestAnimationFrame(countFrame);
     };
-    
-    animationId = requestAnimationFrame(updateFPS);
-    return () => cancelAnimationFrame(animationId);
+    rafId = requestAnimationFrame(countFrame);
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
-  // Fluctuating performance and load values
+  // Time and load updates
   useEffect(() => {
-    const perfInterval = setInterval(() => {
-      // Performance fluctuates 96-100%
-      setDisplayPerf(Math.floor(Math.random() * 5) + 96);
-      // Load fluctuates 90-100%
-      setLoadValue(Math.floor(Math.random() * 11) + 90);
-    }, 2000);
-    
-    return () => clearInterval(perfInterval);
+    const interval = setInterval(() => {
+      setTime(new Date());
+      setLoad(Math.floor(94 + Math.random() * 6));
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Live clock
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const formatTime = (d) => d.toLocaleTimeString('en-US', { 
+    hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' 
+  });
 
-  // Set system online after mount
-  useEffect(() => {
-    const { setSystemStatus, setPerformance } = useSystemStore.getState();
-    setPerformance(displayPerf);
-    setTimeout(() => setSystemStatus('optimal'), 1500);
-  }, [displayPerf]);
-
-  const formatTime = (date) => {
-    return date.toLocaleTimeString('en-US', { 
-      hour12: false, 
-      hour: '2-digit', 
-      minute: '2-digit',
-      second: '2-digit'
-    });
-  };
-
-  // Get status color
-  const getStatusColor = () => {
-    if (systemStatus === 'optimal') return '#22c55e';
-    if (systemStatus === 'online') return '#22c55e';
-    return '#eab308';
-  };
+  // Theme colors
+  const colors = useMemo(() => ({
+    surface: theme === 'light' ? 'rgba(255,255,255,0.7)' : 'rgba(12,12,18,0.8)',
+    border: theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)',
+    text: theme === 'light' ? '#0a0a0f' : '#f8f9fc',
+    muted: theme === 'light' ? '#6b7280' : '#9ca3af',
+  }), [theme]);
 
   return (
     <motion.div 
-      className="fixed top-6 right-6 z-50 hidden md:block"
+      className="fixed top-5 right-5 z-50 hidden md:block"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 2, duration: 0.8, ease: 'easeOut' }}
+      transition={{ delay: 2.2, duration: 0.6 }}
       data-testid="system-hud"
     >
-      <div className="animus-surface rounded-sm p-4 min-w-[180px]">
-        {/* Header with blinking indicator */}
-        <div className="flex items-center gap-2 mb-3 pb-3 border-b border-[var(--animus-border)]">
+      <div 
+        className="backdrop-blur-xl rounded-sm p-3.5 min-w-[160px] transition-colors duration-300"
+        style={{ 
+          background: colors.surface,
+          border: `1px solid ${colors.border}`,
+        }}
+      >
+        {/* Status */}
+        <div 
+          className="flex items-center gap-2 mb-2.5 pb-2.5 transition-colors duration-300"
+          style={{ borderBottom: `1px solid ${colors.border}` }}
+        >
           <motion.div 
-            className="w-[6px] h-[6px] rounded-full"
-            style={{ backgroundColor: getStatusColor() }}
-            animate={{ 
-              opacity: [1, 0.4, 1],
-              boxShadow: [
-                `0 0 8px ${getStatusColor()}`,
-                `0 0 4px ${getStatusColor()}`,
-                `0 0 8px ${getStatusColor()}`
-              ]
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-1.5 h-1.5 rounded-full bg-green-500"
+            animate={{ opacity: [1, 0.4, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            style={{ boxShadow: '0 0 6px rgba(34, 197, 94, 0.5)' }}
           />
-          <motion.span 
-            className="hud-text"
-            key={systemStatus}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
+          <span 
+            className="text-[10px] font-mono tracking-widest uppercase transition-colors duration-300"
+            style={{ color: colors.muted }}
           >
-            {systemStatus.toUpperCase()}
-          </motion.span>
+            {systemStatus === 'optimal' ? 'OPTIMAL' : 'ONLINE'}
+          </span>
         </div>
 
-        {/* Stats Grid with smooth number transitions */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="hud-text opacity-60">FPS</span>
-            <motion.span 
-              className="font-mono text-xs font-medium tabular-nums"
-              key={displayFps}
-              initial={{ opacity: 0.5 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              {displayFps}
-            </motion.span>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <span className="hud-text opacity-60">PERF</span>
-            <motion.span 
-              className="font-mono text-xs font-medium tabular-nums"
-              key={displayPerf}
-              initial={{ opacity: 0.5 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              {displayPerf}%
-            </motion.span>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <span className="hud-text opacity-60">LOAD</span>
-            <motion.span 
-              className="font-mono text-xs font-medium tabular-nums"
-              key={loadValue}
-              initial={{ opacity: 0.5 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              {loadValue}%
-            </motion.span>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <span className="hud-text opacity-60">TIME</span>
-            <span className="font-mono text-xs font-medium tabular-nums">
-              {formatTime(currentTime)}
-            </span>
-          </div>
+        {/* Stats */}
+        <div className="space-y-1.5">
+          {[
+            { label: 'FPS', value: fps },
+            { label: 'LOAD', value: `${load}%` },
+            { label: 'TIME', value: formatTime(time) },
+          ].map(({ label, value }) => (
+            <div key={label} className="flex justify-between items-center">
+              <span 
+                className="text-[9px] font-mono tracking-wider transition-colors duration-300"
+                style={{ color: colors.muted, opacity: 0.7 }}
+              >
+                {label}
+              </span>
+              <span 
+                className="text-[11px] font-mono tabular-nums transition-colors duration-300"
+                style={{ color: colors.text }}
+              >
+                {value}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </motion.div>
