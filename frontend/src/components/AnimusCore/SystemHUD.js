@@ -59,7 +59,7 @@ const SystemHUD = () => {
 
   return (
     <motion.div 
-      className="fixed top-6 right-6 z-50"
+      className="fixed top-6 right-6 z-50 hidden md:block"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 1, duration: 0.6 }}

@@ -15,7 +15,6 @@ const Hero = () => {
         if (prev >= 100) {
           clearInterval(bootInterval);
           setIsBooted(true);
-          setSystemStatus('online');
           return 100;
         }
         return prev + Math.random() * 15;
@@ -23,7 +22,14 @@ const Hero = () => {
     }, 100);
 
     return () => clearInterval(bootInterval);
-  }, [setSystemStatus]);
+  }, []);
+
+  // Update system status after boot completes
+  useEffect(() => {
+    if (isBooted) {
+      setSystemStatus('online');
+    }
+  }, [isBooted, setSystemStatus]);
 
   return (
     <section

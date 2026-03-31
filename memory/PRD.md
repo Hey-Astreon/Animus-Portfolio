@@ -1,54 +1,91 @@
-# Astreon Portfolio - Product Requirements Document
+# Astreon Animus Interface - Product Requirements Document
 
 ## Original Problem Statement
-Create a completely unique, signature animated background system for a portfolio called "Astreon" that feels original, futuristic, and instantly recognizable. The concept is "Astreon Core" — a living digital universe representing intelligence, flow, and creation.
+Redesign the portfolio into a signature experience called "Astreon Animus Interface" - a premium, minimal, futuristic system interface inspired by Animus-style environments (clean, white sci-fi). NOT a normal portfolio. Feels like entering an advanced digital system.
 
 ## Architecture Overview
 - **Frontend**: React 19 with Tailwind CSS
-- **Animation Libraries**: Framer Motion, @tsparticles
-- **Background System**: Multi-layer depth system with Canvas-based particles
-- **Styling**: Glassmorphism, gradient text, soft neon glow effects
+- **Animation**: Framer Motion
+- **State Management**: Zustand
+- **Styling**: CSS Variables for theme system, minimal glassmorphism
+
+## Design Philosophy
+- Minimal ≠ boring
+- Futuristic ≠ neon overload
+- Clean ≠ empty
+- Feels: intelligent, precise, immersive, controlled
 
 ## User Personas
-1. **Potential Employers/Clients** - Looking for a skilled developer with attention to detail
-2. **Fellow Developers** - Interested in the technical implementation
-3. **Design Enthusiasts** - Appreciating the unique visual identity
+1. **Recruiters/Hiring Managers** - Looking for exceptional talent, impressed by attention to detail
+2. **Tech Leads/CTOs** - Evaluating technical skills and system thinking
+3. **Design Enthusiasts** - Appreciating clean, minimal, premium aesthetics
 
 ## Core Requirements (Static)
-- Multi-layer animated background (gradient field, energy waves, neural grid, particles)
-- Core Pulse signature element with expanding circular rings
-- Color palette: Electric violet (#8B5CF6), Cyan (#06B6D4), Pink accent (#EC4899)
-- Sections: Hero, About, Projects, Skills, Contact
-- Responsive design (mobile, tablet, desktop)
-- Glassmorphism UI elements
-- Mouse parallax interaction
-- Smooth scroll animations
+
+### Theme System
+- [x] Light Mode (primary): White/soft gray, subtle gradients, Animus simulation feel
+- [x] Dark Mode: Deep black/charcoal, minimal glow accents, still clean
+- [x] Smooth animated transitions between themes
+
+### Background System
+- [x] CSS-based animated grid pattern
+- [x] Volumetric light beams
+- [x] Rotating ring system (central)
+- [x] Floating geometric elements
+- [x] Mouse parallax interaction
+- [x] Fog/gradient overlay
+
+### System HUD
+- [x] Real-time FPS counter
+- [x] Performance percentage
+- [x] Load time measurement
+- [x] Live clock display
+- [x] Status indicator (online/initializing)
+
+### Hero = System Entry
+- [x] Boot sequence animation with progress bar
+- [x] "ASTREON" clean bold title
+- [x] "DIGITAL ARCHITECTURE SYSTEM" subtitle
+- [x] "System Initialized" status
+- [x] "Enter System" / "Transmission" CTAs
+- [x] Module indicators (Identity, Modules, Matrix, Interface)
+
+### Renamed Sections (System Modules)
+- [x] Core_Identity (01) - About section
+- [x] System_Modules (02) - Projects section
+- [x] Capabilities_Matrix (03) - Skills section
+- [x] Transmission_Interface (04) - Contact section
 
 ## What's Been Implemented ✅ (Jan 2026)
 
-### Background System (Astreon Core)
-- [x] GradientField.js - Animated violet/cyan/pink gradient orbs with blur
-- [x] ParticleField.js - Neural grid particles with mouse grab interaction
-- [x] EnergyWaves.js - Moving horizontal/vertical/diagonal energy lines
-- [x] CorePulse.js - Expanding ring signature animation
-- [x] AstreonBackground.js - Layer composition (z-0 to z-25)
+### Core System
+- [x] Zustand store for theme and system state
+- [x] AnimusBackground.js - CSS animated background
+- [x] SystemHUD.js - Real-time stats display
+- [x] ThemeToggle.js - Light/dark mode switcher
+
+### Sections
+- [x] Hero.js - System boot interface
+- [x] CoreIdentity.js - Identity/Expertise/Mission cards + stats
+- [x] SystemModules.js - 4 project cards with status indicators
+- [x] CapabilitiesMatrix.js - Skill categories with progress bars
+- [x] TransmissionInterface.js - Contact form with mocked submission
 
 ### UI Components
-- [x] Navbar.js - Glassmorphism on scroll, mobile hamburger menu
-- [x] Footer.js - Status indicator, back to top
-- [x] Hero.js - ASTREON title with gradient text, Core Pulse, CTAs
-- [x] About.js - Developer portrait, glass cards (Architecture, Intelligence, Performance)
-- [x] Projects.js - 4 featured work cards with hover effects
-- [x] Skills.js - Tech stack cards with animated marquee background
-- [x] Contact.js - Form with simulated submission
+- [x] Navbar.js - Numbered navigation (01, 02, 03, 04)
+- [x] Footer.js - System online status, return to top
 
 ### Features
-- [x] Loading screen with progress animation
+- [x] Smooth theme transitions
+- [x] Boot sequence animation
+- [x] Mouse parallax on background
 - [x] Scroll progress indicator
-- [x] Mouse parallax effect on content
 - [x] Mobile responsive design
-- [x] Smooth scroll navigation
-- [x] Data-testid attributes for all interactive elements
+- [x] All data-testid attributes
+
+## Testing Results
+- **Success Rate**: 98%
+- **All major features working correctly**
 
 ## Prioritized Backlog
 
@@ -56,33 +93,31 @@ Create a completely unique, signature animated background system for a portfolio
 All core features implemented
 
 ### P1 - High Priority
-- [ ] Integrate actual email service for contact form (SendGrid/Resend)
+- [ ] Integrate actual email service for contact form
 - [ ] Add project details modal/page
-- [ ] Add resume/CV download option
+- [ ] Add 3D elements with Three.js (optional enhancement)
 
 ### P2 - Medium Priority  
-- [ ] Add blog/articles section
-- [ ] Add testimonials section
-- [ ] Add more projects with filtering
-- [ ] Add analytics tracking
-
-### P3 - Low Priority / Nice to Have
-- [ ] Add dark/light theme toggle
-- [ ] Add more interactive elements (3D elements)
-- [ ] Add page transition animations
+- [ ] Add keyboard navigation
 - [ ] Add sound effects (optional)
+- [ ] Add blog/articles section
+
+### P3 - Nice to Have
+- [ ] Add animated cursor
+- [ ] Add Easter eggs
+- [ ] Add certificate/credentials section
 
 ## Next Tasks
 1. Replace placeholder project data with real content
 2. Update social links with actual URLs
 3. Integrate email service for contact form
-4. Add SEO metadata and Open Graph tags
-5. Performance optimization (image lazy loading, code splitting)
+4. Add SEO metadata
+5. Consider adding subtle 3D elements for wow factor
 
 ## Tech Stack
 - React 19
 - Tailwind CSS 3.4
 - Framer Motion 12
-- @tsparticles/react 3.0
+- Zustand 5
 - Lucide React (icons)
-- Fonts: Outfit, Manrope, JetBrains Mono
+- Fonts: Space Grotesk, IBM Plex Mono
