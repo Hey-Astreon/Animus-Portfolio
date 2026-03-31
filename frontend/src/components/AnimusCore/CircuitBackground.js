@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useThemeStore } from '../../store/useStore';
 
@@ -64,7 +64,7 @@ const CircuitBackground = () => {
   }, []);
 
   // 2. High-Performance Animation Loop
-  const animate = (time) => {
+  const animate = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -167,7 +167,7 @@ const CircuitBackground = () => {
 
     ctx.restore();
     requestRef.current = requestAnimationFrame(animate);
-  };
+  }, [isDark, intensity]);
 
   // 3. Lifecycle & Event Handling
   useEffect(() => {
@@ -196,7 +196,7 @@ const CircuitBackground = () => {
       window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(requestRef.current);
     };
-  }, [isDark]); // Re-run loop only on theme change for color stability
+  }, [isDark, animate]); // Re-run loop only on theme change or animation update for stability
 
   return (
     <div 
