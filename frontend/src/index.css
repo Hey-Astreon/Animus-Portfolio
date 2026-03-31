@@ -60,13 +60,15 @@ body {
   line-height: 1.15;
 }
 
-/* Module Card */
+/* Performance hints */
 .module-card {
   padding: 24px;
   background: var(--animus-bg-soft);
   border: 1px solid var(--animus-border);
   transition: transform 0.15s ease, border-color 0.15s ease;
   will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Buttons */
@@ -117,9 +119,9 @@ body {
   background: var(--animus-accent-soft);
 }
 
-/* Theme Transition */
+/* Theme Transition - Optimized */
 .theme-transition,
-.theme-transition * {
+.theme-transition *:not(canvas):not(svg) {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
 
